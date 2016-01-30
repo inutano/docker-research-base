@@ -40,7 +40,7 @@ ENV NB_USER nijntje
 ENV NB_UID 1000
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
   mkdir -p /opt/conda && \
-  chown docker /opt/conda
+  chown nijntje /opt/conda
 
 # Setup home directory
 RUN mkdir /home/$NB_USER/work && \
