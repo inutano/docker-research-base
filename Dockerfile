@@ -144,6 +144,9 @@ RUN conda install --yes \
   #'r-shiny=0.12*' \
   'r-randomforest=4.6*' && conda clean -yt
 
+# switch to python 3.4.3
+RUN conda install --yes python==3.4.3
+
 # Switch user to root again
 USER root
 
