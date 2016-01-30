@@ -45,7 +45,7 @@ ENV TINI_VERSION v0.9.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini.asc /tini.asc
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 0527A9B7 \
-  && gpg --verify /tini.asc \
+  && gpg --verify /tini.asc
 RUN chmod +x /tini
 
 # Configure environment
