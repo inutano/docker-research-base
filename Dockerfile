@@ -11,10 +11,30 @@ USER root
 # Install prerequisites
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -yq --no-install-recommends \
-  git nano vim wget build-essential python-dev ca-certificates bzip2 \
-  unzip libsm6 pandoc texlive-latex-base texlive-latex-extra \
-  texlive-fonts-extra texlive-fonts-recommended texlive-generic-recommended \
-  sudo locales libxrender1 fonts-dejavu gfortran gcc julia libnettle4 \
+  git \
+  nano \
+  vim \
+  wget \
+  build-essential \
+  python-dev \
+  ca-certificates \
+  bzip2 \
+  unzip \
+  sudo \
+  locales \
+  gfortran \
+  gcc \
+  libnettle4 \
+  #libsm6 \
+  #julia \
+  #pandoc \
+  #texlive-latex-base \
+  #texlive-latex-extra \
+  #texlive-fonts-extra \
+  #texlive-fonts-recommended \
+  #texlive-generic-recommended \
+  #libxrender1 \
+  #fonts-dejavu \
   && apt-get clean
 
 # Setting locale
@@ -25,7 +45,8 @@ ENV TINI_VERSION v0.9.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini.asc /tini.asc
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 0527A9B7 \
-  && gpg --verify /tini.asc
+  && gpg --verify /tini.asc \
+  && chmod +x /tini
 
 # Configure environment
 ENV CONDA_DIR /opt/conda
@@ -61,7 +82,6 @@ RUN cd /tmp && \
 
 # Install Python 3 packages
 RUN conda install --yes \
-  'ipywidgets=4.0*' \
   'pandas=0.17*' \
   'matplotlib=1.4*' \
   'numpy=1.10*' \
@@ -76,13 +96,12 @@ RUN conda install --yes \
   'cloudpickle=0.1*' \
   'dill=0.2*' \
   'numba=0.22*' \
-  'bokeh=0.10*' \
+  #'ipywidgets=4.0*' \
+  #'bokeh=0.10*' \
   && conda clean -yt
 
 # Install Python 2 packages
 RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \
-  'ipython=4.0*' \
-  'ipywidgets=4.0*' \
   'pandas=0.17*' \
   'matplotlib=1.4*' \
   'numpy=1.10*' \
@@ -97,7 +116,9 @@ RUN conda create -p $CONDA_DIR/envs/python2 python=2.7 \
   'cloudpickle=0.1*' \
   'dill=0.2*' \
   'numba=0.22*' \
-  'bokeh=0.10*' \
+  #'ipython=4.0*' \
+  #'ipywidgets=4.0*' \
+  #'bokeh=0.10*' \
   pyzmq \
   && conda clean -yt
 
@@ -112,7 +133,6 @@ RUN conda install --yes \
   'r-dplyr=0.4*' \
   'r-ggplot2=1.0*' \
   'r-tidyr=0.3*' \
-  'r-shiny=0.12*' \
   'r-rmarkdown=0.8*' \
   'r-forecast=5.8*' \
   'r-stringr=0.6*' \
@@ -121,6 +141,7 @@ RUN conda install --yes \
   'r-nycflights13=0.1*' \
   'r-caret=6.0*' \
   'r-rcurl=1.95*' \
+  #'r-shiny=0.12*' \
   'r-randomforest=4.6*' && conda clean -yt
 
 # Switch user to root again
@@ -128,7 +149,7 @@ USER root
 
 # Configure container startup as root
 WORKDIR /home/$NB_USER/work
-ENTRYPOINT ["tini", "--"]
+ENTRYPOINT ["/tini", "--"]
 CMD ["bash"]
 
 # Hello, nijntje!
