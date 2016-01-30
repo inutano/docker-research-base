@@ -46,7 +46,7 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini.asc /tini.asc
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 0527A9B7 \
   && gpg --verify /tini.asc \
-  && chmod +x /tini
+RUN chmod +x /tini
 
 # Configure environment
 ENV CONDA_DIR /opt/conda
