@@ -1,6 +1,7 @@
 # supercool docker image for reproducible data science
 # copyright: Tazro Inutano Ohta
 # Distributed under MIT License
+# version 0.1.0
 
 FROM debian:jessie
 
