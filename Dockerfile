@@ -57,16 +57,16 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
 # Create user 'nijntje' with uid=1000 and in the 'users' group
-ENV NB_USER nijntje
+ENV CONTAINER_USER nijntje
 ENV NB_UID 1000
-RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
+RUN useradd -m -s /bin/bash -N -u $NB_UID $CONTAINER_USER && \
   mkdir -p /opt/conda && \
   chown nijntje /opt/conda
 
 # Setup home directory
-RUN mkdir /home/$NB_USER/work && \
-  mkdir /home/$NB_USER/.jupyter && \
-  mkdir /home/$NB_USER/.local
+RUN mkdir /home/$CONTAINER_USER/work && \
+  mkdir /home/$CONTAINER_USER/.jupyter && \
+  mkdir /home/$CONTAINER_USER/.local
 
 # Nijntje, ook bekend als nijntje pluis, is de hoofdpersoon van een serie kinderprentenboeken over een konijntje.
 USER nijntje
@@ -151,9 +151,12 @@ RUN conda install --yes python==3.4.3
 USER root
 
 # Configure container startup as root
-WORKDIR /home/$NB_USER/work
 ENTRYPOINT ["/tini", "--"]
 CMD ["bash"]
+
+# Configure working directory
+WORKDIR /home/$CONTAINER_USER/work
+RUN chown -R $CONTAINER_USER:users /home/$CONTAINER_USER
 
 # Hello, nijntje!
 USER nijntje
